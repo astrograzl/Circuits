@@ -9,4 +9,4 @@ But do not try to move over the extreme position,
 or you will hear the anoing sound of concert pitch.
 As more points you have, the faster the game it is.
 The model of the game is possitive, so you can let it be,
-and just wath the feedback on the controller.
+and just watch the feedback on the controller.
