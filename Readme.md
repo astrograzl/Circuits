@@ -8,7 +8,7 @@
 > Drink more coffee, wine or beer.
 > Start hacking, share you ideas.
 
-Each directory contains per one game. The code and scheme for [Arduino](https://www.arduino.cc/) controller and code for [Processing](https://www.processing.org/) interface.
+Each directory contains per one game. The code and scheme for [Arduino](https://www.arduino.cc/) controller and code for [Processing](https://www.processing.org/) interface. The controller comunicate with the computer over serial line, so **Do not unplug the USB cable!** For convenience firts uploud the program to the Arduino, and then next run the Processing sketch.
 
 ![Environment](https://github.com/astrograzl/Circuits/raw/master/circuits.png)
 
