@@ -11,11 +11,11 @@ void setup() {
   init();
 }
 
-
 int hit;
+int sun;
 int[] horizon;
 final int rand = 8;    // lucky number
-final int numb = 10;   // number of bars
+final int numb = 10;   // number of bars and balls
 final int size = 64;   // increment size
 final int step = 128;  // width of bars
 
@@ -61,7 +61,10 @@ void draw() {
     rect(h*step, height, step, -horizon[h]);
   }
 
-  // tanks
+  // player
+  player.show();
+
+  // rocket & tanks on horizon
   for (int t = 0; t < tanks.size(); t++) {
     Tank tank = tanks.get(t);
     if (rocket != null && int(rocket.x / step) == tank.x &&
@@ -69,22 +72,16 @@ void draw() {
       port.write(hit++);
       tanks.remove(t);
       rocket = null;
+      sun++;
     } else {
       tank.show();
     }
   }
-  if (tanks.size() == 0) {
-    port.write(hit);
-  }
-
-  // player
-  player.show();
-
-  // rocket
   if (rocket != null) {
     for (int h = 0; h < numb; h++) {
       if (int(rocket.x / step) == h && rocket.y > height - horizon[h]) {
         rocket = null;
+        sun++;
         break;
       } else {
         rocket.update();
@@ -92,20 +89,32 @@ void draw() {
       }
     }
   }
+  if (tanks.size() == 0) port.write(hit);
+  if (sun == numb) port.write(sun);
 
+  // angle meter
+  float aw = 420/180.0*player.angle;
+  fill(gray); 
+  rect(0, 48, aw, -32);
+  fill(nogray); 
+  rect(0+aw, 48, 420-aw, -32);
+
+  // rocket meter
+  fill(nogray); 
+  for (int i = 0; i < 10; i++) {
+    ellipse(430+i*42+21, 32, 32, 32);
+  }
   fill(gray);
-  text("Angle", 24, 48);
-  float aw = 500/180.0*player.angle;
-  rect(128, 48, aw, -32);
-  fill(nogray);
-  rect(128+aw, 48, 500-aw, -32);
-  // status bars
-  fill(gray);
-  text("Power", 664, 48);
-  int pw = 500/20*player.power;
-  rect(768, 48, pw, -32);
-  fill(nogray);
-  rect(768+pw, 48, 500-pw, -32);
+  for (int i = 0; i < sun; i++) {
+    ellipse(430+i*42+21, 32, 32, 32);
+  }
+
+  // power meter
+  int pw = 420/20*player.power;
+  fill(gray); 
+  rect(860, 48, pw, -32);
+  fill(nogray); 
+  rect(860+pw, 48, 420-pw, -32);
 }
 
 
@@ -129,5 +138,7 @@ void init() {
     tanks.add(tank);
   }
   rocket = null;
+  port.clear();
   hit = 0;
+  sun = 0;
 }

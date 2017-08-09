@@ -45,10 +45,8 @@ void loop() {
   // incomming commands
   if (Serial.available() > 0) {
     int hit = Serial.read();
-    if (hit < led) {
-      digitalWrite(LED[hit], HIGH);
-    } else {
-      Serial.end();
+    if (hit < led) digitalWrite(LED[hit], HIGH);
+    if (hit == led) {
       for (int i = 0; i < 10; i++) {
         for (int l = 0; l < led; l++) {
           digitalWrite(LED[l], HIGH);
@@ -56,9 +54,22 @@ void loop() {
           digitalWrite(LED[l], LOW);
         }
       }
+    }
+    if (hit == 10) {
+      for (int i = 0; i < 10; i++) {
+        for (int l = led; l > 0; l--) {
+          digitalWrite(LED[l - 1], HIGH);
+          delay(100);
+          digitalWrite(LED[l - 1], LOW);
+        }
+      }
+    }
+    if (hit >= led) {
+      Serial.end();
       Serial.begin(9600);
       Serial.write(255);
     }
   }
 
 }
+
