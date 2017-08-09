@@ -14,9 +14,10 @@ class Player {
 
 class Tank {
   int x, y;
+  color c =  red;
 
   void show() {
-    fill(red);
+    fill(c);
     rect(x*step, y, step, -size);
   }
 }

@@ -1,12 +1,14 @@
 const int PWR = A0;
 const int ANG = A1;
 const int SHT = 8;
+const int BNS = 7;
 const int led = 6;
 const int LED[led] = {2, 3, 4, 10, 11, 12};
 
 void setup() {
   Serial.begin(9600);
   pinMode(SHT, INPUT);
+  pinMode(BNS, OUTPUT);
   for (int l = 0; l < led; l++) {
     pinMode(LED[l], OUTPUT);
   }
@@ -46,7 +48,7 @@ void loop() {
   if (Serial.available() > 0) {
     int hit = Serial.read();
     if (hit < led) digitalWrite(LED[hit], HIGH);
-    if (hit == led) {
+    if (hit == led) {  // winner
       for (int i = 0; i < 10; i++) {
         for (int l = 0; l < led; l++) {
           digitalWrite(LED[l], HIGH);
@@ -55,7 +57,8 @@ void loop() {
         }
       }
     }
-    if (hit == 10) {
+    if (hit == BNS) digitalWrite(BNS, HIGH);
+    if (hit == 10) {  // looser
       for (int i = 0; i < 10; i++) {
         for (int l = led; l > 0; l--) {
           digitalWrite(LED[l - 1], HIGH);
@@ -64,10 +67,11 @@ void loop() {
         }
       }
     }
-    if (hit >= led) {
+    if (hit == led || hit == 10) {
       Serial.end();
       Serial.begin(9600);
       Serial.write(255);
+      digitalWrite(BNS, LOW);
     }
   }
 

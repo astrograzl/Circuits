@@ -28,7 +28,6 @@ color green  = color(78, 154, 6);
 color yellow = color(252, 234, 79);
 color nogray = color(186, 189, 182);
 
-
 Rocket rocket = null;
 Player player = new Player();
 ArrayList<Tank> tanks = new ArrayList<Tank>();
@@ -69,10 +68,15 @@ void draw() {
     Tank tank = tanks.get(t);
     if (rocket != null && int(rocket.x / step) == tank.x &&
       rocket.y < tank.y && rocket.y > tank.y - size) {
-      port.write(hit++);
+      if (tank.c == yellow) {
+        port.write(7);
+        sun = 0;
+      } else {
+        port.write(hit++);
+        sun++;
+      }
       tanks.remove(t);
       rocket = null;
-      sun++;
     } else {
       tank.show();
     }
@@ -130,11 +134,12 @@ void init() {
   player.y = height - horizon[player.x];
   position.remove(player.x);
   tanks.clear();
-  for (int t = 0; t < 6; t++) {
+  for (int t = 0; t < 7; t++) {
     position.shuffle();
     Tank tank = new Tank();
     tank.x = position.remove(0);
     tank.y = height - horizon[tank.x];
+    if (t == 3) tank.c = yellow;
     tanks.add(tank);
   }
   rocket = null;
