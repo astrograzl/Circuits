@@ -93,7 +93,9 @@ void draw() {
       }
     }
   }
-  if (tanks.size() == 0) port.write(hit);
+  if (tanks.size() == 0 || tanks.size() == 1 && tanks.get(0).c == yellow) {
+    port.write(hit);
+  }
   if (sun == numb) port.write(sun);
 
   // angle meter
